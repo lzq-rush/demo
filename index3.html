@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+</head>
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div>
+    <div id="main1" style="width: 60%;height:400px;float:right"></div>
+    <div id="mainnewcpu" style="width: 40%;height:400px;float:right"></div>
+    </div>
+
+    <div>
+    <div id="main2" style="width: 60%;height:400px;float:right"></div>
+    <div id="mainoldcpu" style="width: 40%;height:400px;float:right"></div>
+    </div>
+    <!-- ECharts单文件引入 -->
+    <script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+    <script type="text/javascript">
+        // 路径配置
+        require.config({
+            paths: {
+                echarts: 'http://echarts.baidu.com/build/dist'
+            }
+        });
+        
+        // 使用
+        require(
+            [
+                'echarts',
+                'echarts/chart/line', // 使用柱状图就加载bar模块，按需加载
+                'echarts/chart/bar', // 使用柱状图就加载bar模块，按需加载
+                'echarts/chart/gauge' // 使用柱状图就加载bar模块，按需加载
+            ],
+            function (ec) {
+                // 基于准备好的dom，初始化echarts图表
+                var myChart_new_cpu = ec.init(document.getElementById('mainnewcpu')); 
+                var myChart_old_cpu = ec.init(document.getElementById('mainoldcpu')); 
+                var myChart1 = ec.init(document.getElementById('main1')); 
+                var myChart2 = ec.init(document.getElementById('main2')); 
+                
+                var option1 = {
+    title : {
+            text: '卸载',
+            subtext: '纯属虚构',
+            textStyle:{
+                    fontSize: 18,
+                    fontWeight: 'bolder',
+                    color: '#000'
+            },
+            subtextStyle:{
+                color: '#aaa'
+            }
+        },
+    tooltip : {
+        formatter: "{a} <br/>{c} {b}"
+    },
+    series : [
+        {
+            name:'Gbps',
+            type:'gauge',
+            min:0,
+            max:80,
+            center: ["25%","50%"],
+            splitNumber:10,
+            data:[{value: 40, name: 'Gbps'}]
+        },
+        {
+            name:'Mpps',
+            type:'gauge',
+            min:0,
+            max:80,
+            center: ["75%","50%"],
+            splitNumber:10,
+            data:[{value: 40, name: 'Mpps'}]
+        }
+    ]
+};
+
+var option2 = {
+    title : {
+            text: '非卸载',
+            subtext: '纯属虚构',
+            textStyle:{
+                    fontSize: 18,
+                    fontWeight: 'bolder',
+                    color: '#000'
+            },
+            subtextStyle:{
+                color: '#aaa'
+            }
+        },
+    tooltip : {
+        formatter: "{a} <br/>{c} {b}"
+    },
+    series : [
+        {
+            name:'Gbps',
+            type:'gauge',
+            min:0,
+            max:100,
+            center: ["25%","50%"],
+            splitNumber:10,
+            data:[{value: 40, name: 'Gbps'}]
+        },
+        {
+            name:'Mpps',
+            type:'gauge',
+            min:0,
+            max:100,
+            center: ["75%","50%"],
+            splitNumber:10,
+            data:[{value: 40, name: 'Mpps'}]
+        }
+    ]
+};
+var option_gbps = {
+    title : {
+        text: '卸载CPU使用率',
+        subtext: '纯属虚构'
+    },
+    tooltip : {
+        trigger: 'axis'
+    },
+    calculable : true,
+    xAxis : [
+        {
+            type : 'category',
+            data : ['cpu0','cpu1','cpu2']
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value'
+        }
+    ],
+    series : [
+        {
+            name:'cpu',
+            type:'bar',
+            itemStyle: {
+                normal: {
+                    color: 'tomato',
+                    barBorderColor: 'tomato',
+                    barBorderWidth: 6,
+                    barBorderRadius:0,
+                    label : {
+                        show: true, position: 'insideTop'
+                    }
+                }
+            },
+            data:[2.6, 5.9, 9.0]
+        }
+    ]
+};    
+var option_mpps = {
+    title : {
+        text: '非卸载CPU使用率',
+        subtext: '纯属虚构'
+    },
+    tooltip : {
+        trigger: 'axis'
+    },
+    calculable : true,
+    xAxis : [
+        {
+            type : 'category',
+            data : ['cpu0','cpu1','cpu2']
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value'
+        }
+    ],
+    series : [
+        {
+            name:'cpu',
+            type:'bar',
+            itemStyle: {
+                normal: {
+                    color: 'tomato',
+                    barBorderColor: 'tomato',
+                    barBorderWidth: 6,
+                    barBorderRadius:0,
+                    label : {
+                        show: true, position: 'insideTop'
+                    }
+                }
+            },
+            data:[2.6, 5.9, 9.0]
+        }
+    ]
+};  
+                // 为echarts对象加载数据 
+                myChart1.setOption(option1); 
+                myChart2.setOption(option2); 
+                myChart_new_cpu.setOption(option_gbps);
+                myChart_old_cpu.setOption(option_mpps);
+            }
+        );
+    </script>
+</body>
