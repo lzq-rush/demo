@@ -34,12 +34,11 @@
             ],
             function (ec) {
                 // 基于准备好的dom，初始化echarts图表
-                var myChart_new_cpu = ec.init(document.getElementById('mainnewcpu')); 
-                var myChart_old_cpu = ec.init(document.getElementById('mainoldcpu')); 
-                var myChart1 = ec.init(document.getElementById('main1')); 
-                var myChart2 = ec.init(document.getElementById('main2')); 
-                
-                var option1 = {
+                var myChar_cpu_offload = ec.init(document.getElementById('mainnewcpu')); 
+                var myChar_cpu_no_offload = ec.init(document.getElementById('mainoldcpu')); 
+                var myChar_gbps = ec.init(document.getElementById('main1')); 
+                var myChar_mpps = ec.init(document.getElementById('main2')); 
+                var option_gbps = {
  title : {
         text: 'Gbps',
         subtext: '纯属虚构'
@@ -65,12 +64,23 @@
         {
             type : 'category',
             boundaryGap : false,
-            data : ['周一','周二','周三','周四','周五','周六','周日']
+            data : (function (){
+                var now = new Date();
+                var res = [];
+                var len = 10;
+                while (len--) {
+                    res.unshift(now.toLocaleTimeString().replace(/^\D*/,''));
+                    now = new Date(now - 2000);
+                }
+                return res;
+            })()
         }
     ],
     yAxis : [
         {
             type : 'value',
+            min : 0,
+            max : 70,
             axisLabel : {
                 formatter: '{value} Gbps'
             }
@@ -84,7 +94,7 @@
         {
             name:'卸载Gbps',
             type:'line',
-            smooth: true,
+            
             markPoint : {
                 data : [
                     {type : 'max', name: '最大值'},
@@ -96,12 +106,21 @@
                     {type : 'average', name: '平均值'}
                 ]
             },
-            data:[43.1, 44.2, 45.7, 44.9, 46.0, 47.9, 45.0]
+            itemStyle: {
+                normal: {
+                    label : {
+                        show: true, position: 'top',
+                        textStyle: {
+                            fontSize: 13
+                        }
+                    }
+                }
+            },
+            data:[43.1, 44.2, 45.7, 44.9, 46.0, 47.9, 45.0, 46.0, 42.1, 48.2]
         },
         {
             name:'非卸载Gbps',
             type:'line',
-            smooth: true,
             // markPoint : {
             //     data : [
             //         {name : 'Old Gbps 最低', value : -2, xAxis: 1, yAxis: -1.5}
@@ -112,12 +131,22 @@
                     {type : 'average', name : '平均值'}
                 ]
             },
-            data:[23.1, 24.2, 25.7, 24.9, 26.0, 27.9, 25.0]
+            itemStyle: {
+                normal: {
+                    label : {
+                        show: true, position: 'top',
+                        textStyle: {
+                            fontSize: 13
+                        }
+                    }
+                }
+            },
+            data:[23.1, 24.2, 25.7, 24.9, 26.0, 27.9, 25.0, 25.2, 26.1, 24.9]
         }
     ]
 };
 
-var option2 = {
+var option_mpps = {
 title : {
         text: 'MPPS',
         subtext: '纯属虚构'
@@ -143,12 +172,23 @@ title : {
         {
             type : 'category',
             boundaryGap : false,
-            data : ['1','2','3','4','5','6','7']
+            data : (function (){
+                var now = new Date();
+                var res = [];
+                var len = 10;
+                while (len--) {
+                    res.unshift(now.toLocaleTimeString().replace(/^\D*/,''));
+                    now = new Date(now - 2000);
+                }
+                return res;
+            })()
         }
     ],
     yAxis : [
         {
             type : 'value',
+            min : 0,
+            max : 50,
             axisLabel : {
                 formatter: '{value} Mpps'
             }
@@ -162,7 +202,7 @@ title : {
         {
             name:'卸载Mpps',
             type:'line',
-            smooth: true,
+            
             markPoint : {
                 data : [
                     {type : 'max', name: '最大值'},
@@ -174,12 +214,21 @@ title : {
                     {type : 'average', name: '平均值'}
                 ]
             },
-            data:[43.1, 44.2, 45.7, 44.9, 46.0, 47.9, 45.0]
+            itemStyle: {
+                normal: {
+                    label : {
+                        show: true, position: 'top',
+                        textStyle: {
+                            fontSize: 13
+                        }
+                    }
+                }
+            },
+            data:[43.1, 44.2, 45.7, 44.9, 46.0, 47.9, 45.0, 46.0, 42.1, 48.2]
         },
         {
             name:'非卸载Mpps',
             type:'line',
-            smooth: true,
             // markPoint : {
             //     data : [
             //         {name : 'Old Gbps 最低', value : -2, xAxis: 1, yAxis: -1.5}
@@ -190,11 +239,21 @@ title : {
                     {type : 'average', name : '平均值'}
                 ]
             },
-            data:[23.1, 24.2, 25.7, 24.9, 26.0, 27.9, 25.0]
+            itemStyle: {
+                normal: {
+                    label : {
+                        show: true, position: 'top',
+                        textStyle: {
+                            fontSize: 13
+                        }
+                    }
+                }
+            },
+            data:[23.1, 24.2, 25.7, 24.9, 26.0, 27.9, 25.0, 25.2, 26.1, 24.9]
         }
     ]
 };
-var option_gbps = {
+var option_cpu_offload = {
     title : {
             text: '卸载CPU利用率',
             subtext: '纯属虚构',
@@ -214,12 +273,24 @@ var option_gbps = {
         {
             name:'CPU0',
             type:'gauge',
+            title :{
+                text: 'CPU0',
+                show : true,
+                offsetCenter: [0, '-40%'],
+                textStyle: {
+                    color: '#333',
+                    fontSize : 15
+                }
+            },
             min:0,
             max:100,
             center: ["16.5%","50%"],
             radius: '60%',
             splitNumber:10,
-            data:[{value: 40, name: '%'}]
+            detail:{
+                formatter:'{value}%',
+            },
+            data:[{value: 40, name: 'CPU0'}]
         },
         {
             name:'cpu1',
@@ -229,7 +300,10 @@ var option_gbps = {
             center: ["49.5%","50%"],
             radius: '60%',
             splitNumber:10,
-            data:[{value: 40, name: '%'}]
+            detail:{
+                formatter:'{value}%',
+            },
+            data:[{value: 40, name: 'CPU1'}]
         },
         {
             name:'CPU2',
@@ -239,11 +313,14 @@ var option_gbps = {
             center: ["82.5%","50%"],
             radius: '60%',
             splitNumber:10,
-            data:[{value: 40, name: '%'}]
+            detail:{
+                formatter:'{value}%',
+            },
+            data:[{value: 40, name: 'CPU2'}]
         }
     ]
 };    
-var option_mpps = {
+var option_cpu_no_offload = {
     title : {
             text: '非卸载CPU利用率',
             subtext: '纯属虚构',
@@ -261,24 +338,39 @@ var option_mpps = {
     },
     series : [
         {
-            name:'cpu0',
+            name:'CPU0',
             type:'gauge',
+            title :{
+                text: 'CPU0',
+                show : true,
+                offsetCenter: [0, '-40%'],
+                textStyle: {
+                    color: '#333',
+                    fontSize : 15
+                }
+            },
             min:0,
             max:100,
             center: ["16.5%","50%"],
             radius: '60%',
             splitNumber:10,
-            data:[{value: 40, name: '%'}]
+            detail:{
+                formatter:'{value}%',
+            },
+            data:[{value: 40, name: 'CPU0'}]
         },
         {
-            name:'CPU1',
+            name:'cpu1',
             type:'gauge',
             min:0,
             max:100,
             center: ["49.5%","50%"],
             radius: '60%',
             splitNumber:10,
-            data:[{value: 40, name: '%'}]
+            detail:{
+                formatter:'{value}%',
+            },
+            data:[{value: 40, name: 'CPU1'}]
         },
         {
             name:'CPU2',
@@ -288,15 +380,27 @@ var option_mpps = {
             center: ["82.5%","50%"],
             radius: '60%',
             splitNumber:10,
-            data:[{value: 40, name: '%'}]
+            detail:{
+                formatter:'{value}%',
+            },
+            data:[{value: 40, name: 'CPU2'}]
         }
     ]
 };  
+
+            
+            timeTicket = setInterval(function (){
+                option_cpu_offload.series[0].data[0].value = (Math.random()*100).toFixed(2) - 0;
+                myChar_cpu_offload.setOption(option_cpu_offload, true);
+            },2000);
+            // clearInterval(timeTicket);
+
+
                 // 为echarts对象加载数据 
-                myChart1.setOption(option1); 
-                myChart2.setOption(option2); 
-                myChart_new_cpu.setOption(option_gbps);
-                myChart_old_cpu.setOption(option_mpps);
+                myChar_gbps.setOption(option_gbps); 
+                myChar_mpps.setOption(option_mpps); 
+                myChar_cpu_offload.setOption(option_cpu_offload);
+                myChar_cpu_no_offload.setOption(option_cpu_no_offload);
             }
         );
     </script>

@@ -34,12 +34,12 @@
             ],
             function (ec) {
                 // 基于准备好的dom，初始化echarts图表
-                var myChart_new_cpu = ec.init(document.getElementById('mainnewcpu')); 
-                var myChart_old_cpu = ec.init(document.getElementById('mainoldcpu')); 
-                var myChart1 = ec.init(document.getElementById('main1')); 
-                var myChart2 = ec.init(document.getElementById('main2')); 
+                var myChar_cpu_offload = ec.init(document.getElementById('mainnewcpu')); 
+                var myChar_cpu_no_offload = ec.init(document.getElementById('mainoldcpu')); 
+                var myChar_offload = ec.init(document.getElementById('main1')); 
+                var myChar_no_offload = ec.init(document.getElementById('main2')); 
                 
-                var option1 = {
+                var option_offload = {
     title : {
             text: '卸载',
             subtext: '纯属虚构',
@@ -77,7 +77,7 @@
     ]
 };
 
-var option2 = {
+var option_no_offload = {
     title : {
             text: '非卸载',
             subtext: '纯属虚构',
@@ -114,7 +114,7 @@ var option2 = {
         }
     ]
 };
-var option_gbps = {
+var option_cpu_offload = {
     title : {
         text: '卸载CPU使用率',
         subtext: '纯属虚构'
@@ -126,7 +126,12 @@ var option_gbps = {
     xAxis : [
         {
             type : 'category',
-            data : ['cpu0','cpu1','cpu2']
+            data : ['cpu0','cpu1','cpu2'],
+            axisLabel:{
+                textStyle:{
+                    fontSize: 20
+                }
+            }
         }
     ],
     yAxis : [
@@ -145,7 +150,10 @@ var option_gbps = {
                     barBorderWidth: 6,
                     barBorderRadius:0,
                     label : {
-                        show: true, position: 'insideTop'
+                        show: true, position: 'insideTop',
+                        textStyle: {
+                            fontSize: 20
+                        }
                     }
                 }
             },
@@ -153,7 +161,7 @@ var option_gbps = {
         }
     ]
 };    
-var option_mpps = {
+var option_cpu_no_offload = {
     title : {
         text: '非卸载CPU使用率',
         subtext: '纯属虚构'
@@ -165,7 +173,12 @@ var option_mpps = {
     xAxis : [
         {
             type : 'category',
-            data : ['cpu0','cpu1','cpu2']
+            data : ['cpu0','cpu1','cpu2'],
+            axisLabel:{
+                textStyle:{
+                    fontSize: 20
+                }
+            }
         }
     ],
     yAxis : [
@@ -184,7 +197,10 @@ var option_mpps = {
                     barBorderWidth: 6,
                     barBorderRadius:0,
                     label : {
-                        show: true, position: 'insideTop'
+                        show: true, position: 'insideTop',
+                        textStyle: {
+                            fontSize: 20
+                        }
                     }
                 }
             },
@@ -193,10 +209,10 @@ var option_mpps = {
     ]
 };  
                 // 为echarts对象加载数据 
-                myChart1.setOption(option1); 
-                myChart2.setOption(option2); 
-                myChart_new_cpu.setOption(option_gbps);
-                myChart_old_cpu.setOption(option_mpps);
+                myChar_offload.setOption(option_offload); 
+                myChar_no_offload.setOption(option_no_offload); 
+                myChar_cpu_offload.setOption(option_cpu_offload);
+                myChar_cpu_no_offload.setOption(option_cpu_no_offload);
             }
         );
     </script>
