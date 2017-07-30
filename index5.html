@@ -289,6 +289,8 @@ var option_cpu_no_offload = {
         {
             name:'cpu',
             type:'bar',
+            min : 0,
+            max : 100,
             itemStyle: {
                 normal: {
                     color: 'tomato',
@@ -303,7 +305,7 @@ var option_cpu_no_offload = {
                     }
                 }
             },
-            data:[2.6, 5.9, 9.0]
+            data:[80, 90, 90]
         }
     ]
 };  
@@ -317,6 +319,8 @@ timeTicket = setInterval(function (){
     lastData += Math.random() * ((Math.round(Math.random() * 10) % 2) == 0 ? 1 : -1);
     lastData = lastData.toFixed(1) - 0;
     axisData = (new Date()).toLocaleTimeString().replace(/^\D*/,'');
+
+
     
     // set data
     // 动态数据接口 addData
@@ -332,14 +336,14 @@ timeTicket = setInterval(function (){
             Math.round(Math.random() * 10)+20, // 新增数据
             false,    // 新增数据是否从队列头部插入
             false,    // 是否增加队列长度，false则自定删除原有数据，队头插入删队尾，队尾插入删队头
-            axisData  // 坐标轴标签
+            //axisData  // 坐标轴标签
         ],
         [
             2,        // 系列索引
             Math.round(Math.random() * 10)+10, // 新增数据
             false,    // 新增数据是否从队列头部插入
             false,    // 是否增加队列长度，false则自定删除原有数据，队头插入删队尾，队尾插入删队头
-            axisData  // 坐标轴标签
+            //axisData  // 坐标轴标签
         ],
         [
             3,        // 系列索引
@@ -350,7 +354,9 @@ timeTicket = setInterval(function (){
         ]
     ]);
 
+
     option_cpu_no_offload.series[0].data[0] = Math.round(Math.random() * 10)+80;
+    myChar_cpu_no_offload.setOption(option_cpu_no_offload);
 
 
 }, 2100);
